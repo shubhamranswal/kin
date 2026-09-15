@@ -59,7 +59,7 @@ class RuntimeAgent:
             channel=channel,
             agent_uid="0",
             remote_uids=[remote_uid],
-            name=f"kin-{character.id}",
+            name=f"kin-{character.id}-{channel}",
             idle_timeout=120,
         )
 

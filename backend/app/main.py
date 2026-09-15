@@ -1,4 +1,5 @@
 import os
+import uuid
 
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
@@ -75,7 +76,9 @@ async def create_runtime_session():
     try:
         runtime = RuntimeAgent()
 
-        channel = "kin-raj-test"
+        session_id = uuid.uuid4().hex[:12]
+
+        channel = f"kin-raj-{session_id}"
         remote_uid = "1001"
 
         agent_id = runtime.start(
