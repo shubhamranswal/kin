@@ -50,7 +50,7 @@ class RuntimeAgent:
         )
 
         agent = (
-            Agent(self.agora.client)
+            Agent(self.agora.client, greeting="Yoo, wassup dawg!",)
             .with_llm(llm)
             .with_tts(tts)
         )
