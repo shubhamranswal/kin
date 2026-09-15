@@ -37,6 +37,8 @@ Pay particular attention to:
 - languages the character can naturally speak
 
 The character should be internally consistent.
+Do not invent conversation memories, relationship history with the user,
+or current emotional state. Runtime state will be initialized separately.
 
 User's character description:
 {description}
