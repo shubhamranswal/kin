@@ -1,4 +1,5 @@
 import os
+import time
 
 from agora_token_builder import RtcTokenBuilder
 
@@ -22,11 +23,13 @@ class AgoraTokenService:
         uid: int,
         expires_in: int = 3600,
     ) -> str:
+        expire_timestamp = int(time.time()) + expires_in
+
         return RtcTokenBuilder.buildTokenWithUid(
             self.app_id,
             self.app_certificate,
             channel,
             uid,
-            1,  # Publisher
-            expires_in,
+            1,
+            expire_timestamp,
         )
