@@ -47,7 +47,7 @@ class RuntimeAgent:
 
         tts = SarvamTTS(
             key=self.sarvam_api_key,
-            speaker="abhilash",
+            speaker="shubh",
             target_language_code="en-IN",
         )
 
