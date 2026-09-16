@@ -47,7 +47,7 @@ class RuntimeAgent:
 
         tts = SarvamTTS(
             key=self.sarvam_api_key,
-            speaker='anushka',
+            speaker='shubh',
             target_language_code='en-IN',
         )
 
@@ -62,6 +62,11 @@ class RuntimeAgent:
             .with_llm(llm)
             .with_tts(tts)
         )
+
+        print("KIN AGENT CONFIG")
+        print(agent.config)
+        print("KIN AGENT PROPERTIES")
+        print(agent.to_properties())
 
         session = agent.create_session(
             channel=channel,
