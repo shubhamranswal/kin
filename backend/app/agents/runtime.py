@@ -1,7 +1,7 @@
 import os
 
 from agora_agent import Agent, Gemini
-from agora_agent.agentkit.vendors import GeminiSTT, GradiumTTS
+from agora_agent.agentkit.vendors import GeminiSTT, SarvamTTS
 
 from app.agents.runtime_prompt import build_character_system_prompt
 from app.models.character import KinCharacter
@@ -15,16 +15,16 @@ class RuntimeAgent:
         self.agora = AgoraService()
 
         gemini_api_key = os.getenv("GEMINI_API_KEY")
-        gradium_api_key = os.getenv("GRADIUM_API_KEY")
+        sarvam_api_key = os.getenv("SARVAM_API_KEY")
 
         if not gemini_api_key:
             raise RuntimeError("GEMINI_API_KEY is not configured.")
 
-        if not gradium_api_key:
-            raise RuntimeError("GRADIUM_API_KEY is not configured.")
+        if not sarvam_api_key:
+            raise RuntimeError("SARVAM_API_KEY is not configured.")
 
         self.gemini_api_key = gemini_api_key
-        self.gradium_api_key = gradium_api_key
+        self.sarvam_api_key = sarvam_api_key
 
     def start(
         self,
@@ -45,13 +45,15 @@ class RuntimeAgent:
             ],
         )
 
-        tts = GradiumTTS(
-            api_key=self.gradium_api_key,
+        tts = SarvamTTS(
+            key=self.sarvam_api_key,
+            speaker="abhilash",
+            target_language_code="hi-IN",
         )
 
         stt = GeminiSTT(
             api_key=self.gemini_api_key,
-            language="en",
+            language_codes=["en-IN", "hi-IN"],
         )
 
         agent = (
