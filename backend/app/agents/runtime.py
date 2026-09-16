@@ -1,7 +1,7 @@
 import os
 
 from agora_agent import Agent, Gemini
-from agora_agent.agentkit.vendors import GradiumTTS
+from agora_agent.agentkit.vendors import GeminiSTT, GradiumTTS
 
 from app.agents.runtime_prompt import build_character_system_prompt
 from app.models.character import KinCharacter
@@ -25,6 +25,11 @@ class RuntimeAgent:
 
         self.gemini_api_key = gemini_api_key
         self.gradium_api_key = gradium_api_key
+
+        self.stt = GeminiSTT(
+            api_key=self.gemini_api_key,
+            language="en",
+        )
 
     def start(
         self,
@@ -51,6 +56,7 @@ class RuntimeAgent:
 
         agent = (
             Agent(self.agora.client, greeting="Yoo, wassup dawg!",)
+            .with_stt(self.stt)
             .with_llm(llm)
             .with_tts(tts)
         )
