@@ -26,11 +26,6 @@ class RuntimeAgent:
         self.gemini_api_key = gemini_api_key
         self.gradium_api_key = gradium_api_key
 
-        self.stt = GeminiSTT(
-            api_key=self.gemini_api_key,
-            language="en",
-        )
-
     def start(
         self,
         character: KinCharacter,
@@ -54,9 +49,14 @@ class RuntimeAgent:
             api_key=self.gradium_api_key,
         )
 
+        stt = GeminiSTT(
+            api_key=self.gemini_api_key,
+            language="en",
+        )
+
         agent = (
             Agent(self.agora.client, greeting="Yoo, wassup dawg!",)
-            .with_stt(self.stt)
+            .with_stt(stt)
             .with_llm(llm)
             .with_tts(tts)
         )
