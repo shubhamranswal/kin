@@ -81,20 +81,22 @@ async def test_runtime():
 async def create_runtime_session():
     try:
         runtime = RuntimeAgent()
-
         session_id = uuid.uuid4().hex[:12]
-
         channel = f"kin-raj-{session_id}"
         remote_uid = "1001"
 
-        agent_id = runtime.start(
-            character=raj,
-            channel=channel,
-            remote_uid=remote_uid,
-        )
+        try:
+            agent_id = runtime.start(
+                character=raj,
+                channel=channel,
+                remote_uid=remote_uid,
+            )
+        except Exception:
+            import traceback
+            traceback.print_exc()
+            raise
 
         token_service = AgoraTokenService()
-
         rtc_token = token_service.generate_rtc_token(
             channel=channel,
             uid=int(remote_uid),
@@ -115,7 +117,7 @@ async def create_runtime_session():
             status_code=500,
             detail=f"Runtime session failed: {exc}",
         ) from exc
-
+    
 
 @app.post("/debug/tts")
 async def debug_tts():
