@@ -48,7 +48,7 @@ class RuntimeAgent:
         tts = SarvamTTS(
             key=self.sarvam_api_key,
             speaker="abhilash",
-            target_language_code="hi-IN",
+            target_language_code="en-IN",
         )
 
         stt = GeminiSTT(
