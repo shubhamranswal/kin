@@ -74,6 +74,7 @@ class RuntimeAgent:
             remote_uids=[remote_uid],
             name=f"kin-{character.id}-{channel}",
             idle_timeout=120,
+            debug=True,
         )
 
         return session.start()
