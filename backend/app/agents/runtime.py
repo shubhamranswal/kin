@@ -63,10 +63,14 @@ class RuntimeAgent:
             .with_tts(tts)
         )
 
-        print("KIN AGENT CONFIG")
-        print(agent.config)
-        print("KIN AGENT PROPERTIES")
-        print(agent.to_properties())
+        print(
+            "KIN AGENT PROPERTIES",
+            agent.to_properties(
+                channel=channel,
+                agent_uid="0",
+                remote_uids=[remote_uid],
+            ),
+        )
 
         session = agent.create_session(
             channel=channel,
