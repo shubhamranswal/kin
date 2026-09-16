@@ -1,4 +1,10 @@
+import base64
 import os
+
+import httpx
+from fastapi import HTTPException
+from fastapi.responses import Response
+
 import uuid
 
 from dotenv import load_dotenv
@@ -109,3 +115,74 @@ async def create_runtime_session():
             status_code=500,
             detail=f"Runtime session failed: {exc}",
         ) from exc
+
+
+@app.post("/debug/tts")
+async def debug_tts():
+    api_key = os.getenv("SARVAM_API_KEY")
+
+    if not api_key:
+        raise HTTPException(
+            status_code=500,
+            detail="SARVAM_API_KEY is not configured",
+        )
+
+    payload = {
+        "text": "Arre bhai, finally aa gaya? Kya scene hai?",
+        "language_code": "en-IN",
+        "speaker": "shubh",
+        "model": "bulbul:v3",
+        "speech_sample_rate": 24000,
+        "output_audio_codec": "wav",
+    }
+
+    async with httpx.AsyncClient(timeout=30) as client:
+        response = await client.post(
+            "https://api.sarvam.ai/text-to-speech",
+            headers={
+                "api-subscription-key": api_key,
+                "Content-Type": "application/json",
+            },
+            json=payload,
+        )
+
+    if response.status_code != 200:
+        raise HTTPException(
+            status_code=response.status_code,
+            detail=response.text,
+        )
+
+    result = response.json()
+
+    audios = result.get("audios")
+
+    if not audios:
+        raise HTTPException(
+            status_code=500,
+            detail="Sarvam returned no audio",
+        )
+
+    audio_bytes = base64.b64decode(audios[0])
+
+    return Response(
+        content=audio_bytes,
+        media_type="audio/wav",
+        headers={
+            "X-Sarvam-Request-ID": result.get(
+                "request_id",
+                ""
+            ),
+        },
+    )
+
+
+@app.get("/debug/config")
+async def debug_config():
+    return {
+        "gemini_configured": bool(os.getenv("GEMINI_API_KEY")),
+        "sarvam_configured": bool(os.getenv("SARVAM_API_KEY")),
+        "agora_configured": bool(
+            os.getenv("AGORA_APP_ID")
+            and os.getenv("AGORA_APP_CERTIFICATE")
+        ),
+    }
