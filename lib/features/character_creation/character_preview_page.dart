@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:kin/core/config/agora_config.dart';
+import 'package:kin/features/call/kin_call_page.dart';
 import '../../models/kin_character.dart';
 
 class CharacterPreviewPage extends StatelessWidget {
@@ -195,7 +197,15 @@ class CharacterPreviewPage extends StatelessWidget {
                     width: double.infinity,
                     height: 60,
                     child: ElevatedButton.icon(
-                      onPressed: () {},
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => const KinCallPage(
+                                appId: agoraAppId,
+                              ),
+                            ),
+                          );
+                        },
                       icon: const Icon(Icons.call_rounded),
                       label: Text(
                         'Talk to ${character.name}',

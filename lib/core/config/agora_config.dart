@@ -1,0 +1,1 @@
+const agoraAppId = '1c03d88837da43aaae001165528ab9c8';
